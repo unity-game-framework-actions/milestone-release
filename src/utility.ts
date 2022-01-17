@@ -316,7 +316,7 @@ export async function getMilestone(owner: string, repo: string, milestoneNumberO
         }
       }
 
-      throw `Milestone not found by the specified title: '${milestoneNumberOrTitle}'.`
+      return null
     }
   } catch {
     throw `Milestone not found by the specified number or title: '${milestoneNumberOrTitle}'.`

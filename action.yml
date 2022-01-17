@@ -9,20 +9,13 @@ inputs:
     description: 'Owner and repository name. For example, "Codertocat/Hello-World".'
     default: ${{ github.repository }}
     required: true
-  config:
-    description: 'Path to file or config as value with generate settings. (Possible representation types: "Json" or "Yaml".)'
-    default: .github/config.yml
+  unreleased:
+    description: 'Title of the unreleased milestone.'
+    default: Unreleased
     required: true
-  context:
-    description: 'Context can be specific value or file path, and can be accessed in text formatting context. (Possible representation types: "Json" or "Yaml".)'
-    default: '{}'
+  release:
+    description: 'Title of the new released milestone.'
     required: true
-  input:
-    description: 'Input can be specific value or file path. (Possible representation types: "Json" or "Yaml".)'
-    required: true
-  output:
-    description: 'Path to output result as file.'
-    required: false
 outputs:
   result:
     description: 'Action result.'
