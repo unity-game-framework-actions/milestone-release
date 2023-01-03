@@ -46,7 +46,7 @@ function createMilestoneRelease(owner, repo, unreleased, release) {
 exports.createMilestoneRelease = createMilestoneRelease;
 function updateUnreleased(owner, repo, unreleased, release) {
     return __awaiter(this, void 0, void 0, function* () {
-        const milestone = yield utility.getMilestone(owner, repo, unreleased);
+        const milestone = yield utility.tryGetMilestone(owner, repo, unreleased);
         if (milestone != null) {
             yield updateMilestone(owner, repo, unreleased, release, 'closed');
         }
@@ -178,7 +178,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.dispatch = exports.getTagsByBranch = exports.getTags = exports.updateRelease = exports.getReleasesByBranch = exports.getReleases = exports.getRelease = exports.updateContent = exports.getMilestoneIssues = exports.getMilestones = exports.getMilestone = exports.getIssue = exports.containsInBranch = exports.getOctokit = exports.formatDate = exports.getOwnerAndRepo = exports.getRepository = exports.setValue = exports.getValue = exports.indent = exports.formatValues = exports.normalize = exports.setOutputFile = exports.setOutputAction = exports.setOutputByType = exports.setOutput = exports.getInput = exports.getInputAny = exports.getContextAny = exports.parse = exports.parseAny = exports.format = exports.write = exports.writeData = exports.read = exports.readData = exports.readDataAny = exports.getDataAny = exports.readConfig = exports.readConfigAny = exports.merge = exports.exists = exports.isInteger = void 0;
+exports.dispatch = exports.getTagsByBranch = exports.getTags = exports.updateRelease = exports.getReleasesByBranch = exports.getReleases = exports.getRelease = exports.updateContent = exports.getMilestoneIssues = exports.getMilestones = exports.getMilestone = exports.tryGetMilestone = exports.getIssue = exports.containsInBranch = exports.getOctokit = exports.formatDate = exports.getOwnerAndRepo = exports.getRepository = exports.setValue = exports.getValue = exports.indent = exports.formatValues = exports.normalize = exports.setOutputFile = exports.setOutputAction = exports.setOutputByType = exports.setOutput = exports.getInput = exports.getInputAny = exports.getContextAny = exports.parse = exports.parseAny = exports.format = exports.write = exports.writeData = exports.read = exports.readData = exports.readDataAny = exports.getDataAny = exports.readConfig = exports.readConfigAny = exports.merge = exports.exists = exports.isInteger = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const fs_1 = __nccwpck_require__(7147);
@@ -487,6 +487,30 @@ function getIssue(owner, repo, number) {
     });
 }
 exports.getIssue = getIssue;
+function tryGetMilestone(owner, repo, milestoneNumberOrTitle) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const octokit = getOctokit();
+        try {
+            if (isInteger(milestoneNumberOrTitle)) {
+                const response = yield octokit.request(`GET /repos/${owner}/${repo}/milestones/${milestoneNumberOrTitle}`);
+                return response.data;
+            }
+            else {
+                const milestones = yield octokit.paginate(`GET /repos/${owner}/${repo}/milestones?state=all`);
+                for (const milestone of milestones) {
+                    if (milestone.title === milestoneNumberOrTitle) {
+                        return milestone;
+                    }
+                }
+                return null;
+            }
+        }
+        catch (_a) {
+            return null;
+        }
+    });
+}
+exports.tryGetMilestone = tryGetMilestone;
 function getMilestone(owner, repo, milestoneNumberOrTitle) {
     return __awaiter(this, void 0, void 0, function* () {
         const octokit = getOctokit();
