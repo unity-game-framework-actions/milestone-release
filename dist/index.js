@@ -57,7 +57,7 @@ function updateUnreleased(owner, repo, unreleased, release) {
 }
 function createUnreleased(owner, repo, title) {
     return __awaiter(this, void 0, void 0, function* () {
-        const milestone = yield utility.getMilestone(owner, repo, title);
+        const milestone = yield utility.tryGetMilestone(owner, repo, title);
         if (milestone == null) {
             yield createMilestone(owner, repo, title, 'open');
         }

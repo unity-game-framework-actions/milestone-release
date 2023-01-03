@@ -16,7 +16,7 @@ async function updateUnreleased(owner: string, repo: string, unreleased: string,
 }
 
 async function createUnreleased(owner: string, repo: string, title: string): Promise<any> {
-  const milestone = await utility.getMilestone(owner, repo, title)
+  const milestone = await utility.tryGetMilestone(owner, repo, title)
 
   if (milestone == null) {
     await createMilestone(owner, repo, title, 'open')
