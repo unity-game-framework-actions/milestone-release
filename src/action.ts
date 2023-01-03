@@ -6,7 +6,7 @@ export async function createMilestoneRelease(owner: string, repo: string, unrele
 }
 
 async function updateUnreleased(owner: string, repo: string, unreleased: string, release: string): Promise<any> {
-  const milestone = await utility.getMilestone(owner, repo, unreleased)
+  const milestone = await utility.tryGetMilestone(owner, repo, unreleased)
 
   if (milestone != null) {
     await updateMilestone(owner, repo, unreleased, release, 'closed')

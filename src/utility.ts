@@ -299,6 +299,30 @@ export async function getIssue(owner: string, repo: string, number: string): Pro
   return response.data
 }
 
+export async function tryGetMilestone(owner: string, repo: string, milestoneNumberOrTitle: string): Promise<any> {
+  const octokit = getOctokit()
+
+  try {
+    if (isInteger(milestoneNumberOrTitle)) {
+      const response = await octokit.request(`GET /repos/${owner}/${repo}/milestones/${milestoneNumberOrTitle}`)
+
+      return response.data
+    } else {
+      const milestones = await octokit.paginate(`GET /repos/${owner}/${repo}/milestones?state=all`)
+
+      for (const milestone of milestones) {
+        if (milestone.title === milestoneNumberOrTitle) {
+          return milestone
+        }
+      }
+
+      return null
+    }
+  } catch {
+    return null
+  }
+}
+
 export async function getMilestone(owner: string, repo: string, milestoneNumberOrTitle: string): Promise<any> {
   const octokit = getOctokit()
 
