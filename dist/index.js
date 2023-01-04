@@ -68,7 +68,8 @@ function createMilestone(owner, repo, title, state) {
         const octokit = utility.getOctokit();
         yield octokit.request(`POST /repos/${owner}/${repo}/milestones`, {
             title: title,
-            state: state
+            state: state,
+            description: ''
         });
     });
 }
