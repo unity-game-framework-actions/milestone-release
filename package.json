@@ -1,6 +1,6 @@
 {
   "name": "milestone-release",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Milestone Release",
   "description": "Update and create release milestone.",
   "main": "lib/main.js",
