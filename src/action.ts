@@ -28,7 +28,8 @@ async function createMilestone(owner: string, repo: string, title: string, state
 
   await octokit.request(`POST /repos/${owner}/${repo}/milestones`, {
     title: title,
-    state: state
+    state: state,
+    description: ''
   })
 }
 
